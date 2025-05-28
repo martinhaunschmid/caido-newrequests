@@ -7,30 +7,22 @@ import tailwindCaido from "@caido/tailwindcss";
 import path from "path";
 import prefixwrap from "postcss-prefixwrap";
 
-const id = "frontend-vue";
+const id = "caido-whatsnew";
 export default defineConfig({
   id,
-  name: "Frontend Vue",
-  description: "Plugin template with frontend using VueJS",
-  version: "0.0.0",
+  name: "Caido Whatsnew",
+  description: "Plugin to filter for requests that are new",
+  version: "0.0.1",
   author: {
-    name: "Caido Labs Inc.",
-    email: "dev@caido.io",
-    url: "https://caido.io",
+    name: "ntrm",
+    email: "contact@martinhaunschmid.com",
+    url: "https://martinhaunschmid.com",
   },
   plugins: [
-    {
-      kind: "backend",
-      id: "backend",
-      root: "packages/backend",
-    },
     {
       kind: 'frontend',
       id: "frontend",
       root: 'packages/frontend',
-      backend: {
-        id: "backend",
-      },
       vite: {
         plugins: [vue()],
         build: {
@@ -51,7 +43,7 @@ export default defineConfig({
             plugins: [
               // This plugin wraps the root element in a unique ID
               // This is necessary to prevent styling conflicts between plugins
-              prefixwrap(`#plugin--${id}`),
+              prefixwrap(`#caido-whatsnew--${id}`),
 
               tailwindcss({
                 corePlugins: {
