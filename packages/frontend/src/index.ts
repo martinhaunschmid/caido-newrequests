@@ -46,8 +46,8 @@ export const init = (sdk: FrontendSDK) => {
   sdk.commands.register(`caido-whatsnew-addfilter`, {
     name: `Insert a HTTPQL filter to only show new requests`,
     run: () => {
-      sdk.graphql.interceptEntries().then(q => {
-        let maxRowId = q.interceptEntries.edges.length;
+      sdk.graphql.interceptEntryCount().then(q => {
+        let maxRowId = q.interceptEntries.count.value;
         let currentQuery = cleanQuery(sdk.httpHistory.getQuery())
         let newQuery = `row.id.gt:${maxRowId}`
         if(currentQuery !== "") {
@@ -55,7 +55,7 @@ export const init = (sdk: FrontendSDK) => {
         }
         console.log(`Setting new Query: ${newQuery}`)
         sdk.httpHistory.setQuery(newQuery);
-      });
+      })
     },
     group: "caido-whatsnew",
   })
@@ -73,15 +73,4 @@ export const init = (sdk: FrontendSDK) => {
   })
   sdk.commandPalette.register(`caido-whatsnew-removefilter`);
   sdk.shortcuts.register(`caido-whatsnew-removefilter`, ['cmd', 'shift', 'n']);
-
-  
-
-  // Add the page to the navigation
-  // Make sure to use a unique name for the page
-  // sdk.navigation.addPage("/my-plugin", {
-  //   body: root,
-  // });
-
-  // Add a sidebar item
-  // sdk.sidebar.registerItem("My Plugin", "/my-plugin");
 };
