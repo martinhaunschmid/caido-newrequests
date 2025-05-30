@@ -12,7 +12,7 @@ export default defineConfig({
   id,
   name: "Caido Whatsnew",
   description: "Plugin to filter for requests that are new",
-  version: "0.0.1",
+  version: "0.1.0",
   author: {
     name: "ntrm",
     email: "contact@martinhaunschmid.com",
