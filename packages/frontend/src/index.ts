@@ -43,7 +43,7 @@ export const init = (sdk: FrontendSDK) => {
 
 
   // init the command
-  sdk.commands.register(`caido-whatsnew-addfilter`, {
+  sdk.commands.register(`newrequests-addfilter`, {
     name: `Insert a HTTPQL filter to only show new requests`,
     run: () => {
       sdk.graphql.interceptEntryCount().then(q => {
@@ -53,24 +53,24 @@ export const init = (sdk: FrontendSDK) => {
         if(currentQuery !== "") {
           newQuery = `${currentQuery} and ${newQuery}`
         }
-        console.log(`Setting new Query: ${newQuery}`)
+        // console.log(`Setting new Query: ${newQuery}`)
         sdk.httpHistory.setQuery(newQuery);
       })
     },
-    group: "caido-whatsnew",
+    group: "NewRequests",
   })
-  sdk.commandPalette.register(`caido-whatsnew-addfilter`);
-  sdk.shortcuts.register(`caido-whatsnew-addfilter`, ['cmd', 'n']);
+  sdk.commandPalette.register(`newrequests-addfilter`);
+  sdk.shortcuts.register(`newrequests-addfilter`, ['cmd', 'n']);
 
-  sdk.commands.register(`caido-whatsnew-removefilter`, {
-    name: `Removes the caido-whatsnew row filter`,
+  sdk.commands.register(`newrequests-removefilter`, {
+    name: `Removes the NewRequests row filter`,
     run: () => {
       sdk.graphql.interceptEntries().then(q => {
         sdk.httpHistory.setQuery(cleanQuery(sdk.httpHistory.getQuery()));
       });
     },
-    group: "caido-whatsnew",
+    group: "NewRequests",
   })
-  sdk.commandPalette.register(`caido-whatsnew-removefilter`);
-  sdk.shortcuts.register(`caido-whatsnew-removefilter`, ['cmd', 'shift', 'n']);
+  sdk.commandPalette.register(`newrequests-removefilter`);
+  sdk.shortcuts.register(`newrequests-removefilter`, ['cmd', 'shift', 'n']);
 };
