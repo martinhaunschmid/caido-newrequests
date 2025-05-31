@@ -7,7 +7,7 @@ import tailwindCaido from "@caido/tailwindcss";
 import path from "path";
 import prefixwrap from "postcss-prefixwrap";
 
-const id = "caido-whatsnew";
+const id = "caido-newrequests";
 export default defineConfig({
   id,
   name: "NewRequests",
