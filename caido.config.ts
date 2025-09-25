@@ -12,7 +12,7 @@ export default defineConfig({
   id,
   name: "NewRequests",
   description: "Plugin to filter for requests that are new",
-  version: "0.1.1",
+  version: "0.1.2",
   author: {
     name: "ntrm",
     email: "contact@martinhaunschmid.com",
