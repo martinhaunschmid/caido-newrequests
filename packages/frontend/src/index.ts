@@ -9,8 +9,10 @@ import "./styles/index.css";
 import { SDKPlugin } from "./plugins/sdk";
 import type { FrontendSDK } from "./types";
 
-const cleanQuery = (query: string) : string => {
-  return query.replaceAll(/and row\.id\.gt:\d+/g, "").replaceAll(/row\.id\.gt:\d+/g,"").trim()
+const cleanQuery = (query: string): string => {
+  let cleaned = query.replaceAll(/\s+and\s+row\.id\.gt:\d+/g, "")
+  cleaned = cleaned.replaceAll(/row\.id\.gt:\d+(\s+and\s+)?/g, "")
+  return cleaned.replaceAll(/\s+/g, " ").trim()
 }
 
 // This is the entry point for the frontend plugin
