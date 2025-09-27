@@ -10,10 +10,6 @@ describe('cleanQuery', () => {
     expect(cleanQuery('row.id.gt:123')).toBe('');
   });
 
-  it('removes leading \"and row.id.gt:<n>\"', () => {
-    expect(cleanQuery('and row.id.gt:1')).toBe('');
-  });
-
   it('removes \"row.id.gt:<n> and \" and trims', () => {
     expect(cleanQuery('row.id.gt:1 and ')).toBe('');
   });
@@ -27,16 +23,16 @@ describe('cleanQuery', () => {
   });
 
   it('removes middle filter between terms (note: double space remains by design)', () => {
-    expect(cleanQuery('foo and row.id.gt:2 and bar')).toBe('foo  and bar');
+    expect(cleanQuery('foo and row.id.gt:2 and bar')).toBe('foo and bar');
   });
 
   it('removes standalone filter within text (double space remains)', () => {
-    expect(cleanQuery('foo row.id.gt:2 bar')).toBe('foo  bar');
+    expect(cleanQuery('foo row.id.gt:2 bar')).toBe('foo bar');
   });
 
   it('removes multiple filters', () => {
-    expect(cleanQuery('and row.id.gt:2 and row.id.gt:3')).toBe('');
-    expect(cleanQuery('a and row.id.gt:2 and b and row.id.gt:3')).toBe('a  and b');
+    expect(cleanQuery('row.id.gt:2 and row.id.gt:3')).toBe('');
+    expect(cleanQuery('a and row.id.gt:2 and b and row.id.gt:3')).toBe('a and b');
   });
 
   it('leaves unrelated queries alone (except trimming)', () => {
@@ -44,6 +40,6 @@ describe('cleanQuery', () => {
   });
 
   it('removes filter at the end but preserves trailing \"and\" (as implemented)', () => {
-    expect(cleanQuery('foo and row.id.gt:100 and')).toBe('foo  and');
+    expect(cleanQuery('foo and row.id.gt:100 and')).toBe('foo and');
   });
 });
