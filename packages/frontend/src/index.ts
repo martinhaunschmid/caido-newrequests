@@ -8,10 +8,8 @@ import "./styles/index.css";
 
 import { SDKPlugin } from "./plugins/sdk";
 import type { FrontendSDK } from "./types";
+import { cleanQuery } from "./utils/cleanQuery";
 
-const cleanQuery = (query: string) : string => {
-  return query.replaceAll(/and row\.id\.gt:\d+/g, "").replaceAll(/row\.id\.gt:\d+/g,"").trim()
-}
 
 // This is the entry point for the frontend plugin
 export const init = (sdk: FrontendSDK) => {
@@ -48,11 +46,22 @@ export const init = (sdk: FrontendSDK) => {
     run: () => {
       sdk.graphql.interceptEntryCount().then(q => {
         let maxRowId = q.interceptEntries.count.value;
-        let currentQuery = cleanQuery(sdk.httpHistory.getQuery())
-        let newQuery = `row.id.gt:${maxRowId}`
-        if(currentQuery !== "") {
-          newQuery = `${currentQuery} and ${newQuery}`
+        let currentQuery = sdk.httpHistory.getQuery();
+        let hasRowQuery = currentQuery.toString().match(/row\.id\.gt:\d+/);
+        let newRowQuery = `row.id.gt:${maxRowId}`;
+        let newQuery = "";
+        if(hasRowQuery && hasRowQuery.length > 0) {
+          // existing row query, replace it
+          newQuery = currentQuery.replace(/row\.id\.gt:\d+/, newRowQuery);
+        }else{
+          // no row query
+          if(currentQuery !== "") {
+            newQuery = `${currentQuery} and ${newRowQuery}`;
+          }else{
+            newQuery = newRowQuery;
+          }
         }
+        
         // console.log(`Setting new Query: ${newQuery}`)
         sdk.httpHistory.setQuery(newQuery);
       })
