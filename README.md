@@ -17,8 +17,3 @@ Caido-Whatsnew offers a Hotkey which
 # Installation
 1. Download the zip file from https://github.com/martinhaunschmid/caido-whatsnew/releases
 2. Add to Caido: https://docs.caido.io/guides/plugins
-
-
-
-# Limitations
-This currently only seems to work by querying the GraphQL instance, so there's a small delay in applying the filter.

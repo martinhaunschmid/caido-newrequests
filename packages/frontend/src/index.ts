@@ -10,7 +10,6 @@ import { SDKPlugin } from "./plugins/sdk";
 import type { FrontendSDK } from "./types";
 import { cleanQuery } from "./utils/cleanQuery";
 
-
 // This is the entry point for the frontend plugin
 export const init = (sdk: FrontendSDK) => {
   const app = createApp(App);
@@ -38,14 +37,15 @@ export const init = (sdk: FrontendSDK) => {
 
   // Mount the app to the root element
   app.mount(root);
-
-
   // init the command
   sdk.commands.register(`newrequests-addfilter`, {
     name: `Insert a HTTPQL filter to only show new requests`,
     run: () => {
-      sdk.graphql.interceptEntryCount().then(q => {
-        let maxRowId = q.interceptEntries.count.value;
+      // console.time("maxrowid")
+      sdk.graphql.interceptEntries({last: 1}).then(q => {
+        let maxRowId = q.interceptEntries.edges[0]?.node.id;
+        console.log(`MAX NODE ID: ${maxRowId}`)
+        // let maxRowId = q.interceptEntries.count.value;
         let currentQuery = sdk.httpHistory.getQuery();
         let hasRowQuery = currentQuery.toString().match(/row\.id\.gt:\d+/);
         let newRowQuery = `row.id.gt:${maxRowId}`;
@@ -61,8 +61,8 @@ export const init = (sdk: FrontendSDK) => {
             newQuery = newRowQuery;
           }
         }
-        
-        // console.log(`Setting new Query: ${newQuery}`)
+        // console.timeEnd("maxrowid")
+        console.log(`Setting new Query: ${newQuery}`)
         sdk.httpHistory.setQuery(newQuery);
       })
     },
@@ -74,9 +74,7 @@ export const init = (sdk: FrontendSDK) => {
   sdk.commands.register(`newrequests-removefilter`, {
     name: `Removes the NewRequests row filter`,
     run: () => {
-      sdk.graphql.interceptEntries().then(q => {
-        sdk.httpHistory.setQuery(cleanQuery(sdk.httpHistory.getQuery()));
-      });
+      sdk.httpHistory.setQuery(cleanQuery(sdk.httpHistory.getQuery()));
     },
     group: "NewRequests",
   })
